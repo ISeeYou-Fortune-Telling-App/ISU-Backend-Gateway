@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: isu-gateway-service
+    container_name: isu-gateway
+    ports:
+      - "${SERVER_PORT:-8080}:8080"
+    env_file:
+      - .env
+    restart: unless-stopped
+    networks:
+      - isu-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+networks:
+  isu-network:
+    name: isu-project
+    driver: bridge
+    external: true
+
