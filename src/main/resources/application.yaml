@@ -1,0 +1,52 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ISU-Backend-GatewayService
+
+  webflux:
+    static-path-pattern: /static/**
+
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            # Core Backend Service Routes
+            - id: core-backend-service
+              uri: http://localhost:8081
+              order: 1
+              predicates:
+                - Path=/core/**
+              filters:
+                - StripPrefix=1
+                - name: PreserveHostHeader
+
+            # Push Notification Service Routes
+            - id: push-notification-service
+              uri: http://localhost:8085
+              order: 1
+              predicates:
+                - Path=/notification/**
+              filters:
+                - StripPrefix=1
+                - name: PreserveHostHeader
+
+# Actuator endpoints for monitoring
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+
+# Logging
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.web.server: DEBUG
+    reactor.netty: DEBUG
