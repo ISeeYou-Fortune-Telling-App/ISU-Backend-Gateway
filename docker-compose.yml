@@ -13,13 +13,13 @@ services:
       - .env
     restart: unless-stopped
     networks:
-      - isu-network
+      - isu-gateway
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
 networks:
-  isu-network:
-    name: isu-project
+  isu-gateway:
+    name: isu-gateway
     driver: bridge
     external: true
 
