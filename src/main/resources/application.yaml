@@ -33,6 +33,16 @@ spring:
                 - StripPrefix=1
                 - name: PreserveHostHeader
 
+            # Report Analytic and Log Service Routes
+            - id: report-service
+              uri: ${REPORT_URI:http://localhost:8086}
+              order: 1
+              predicates:
+                - Path=/report/**
+              filters:
+                - StripPrefix=1
+                - name: PreserveHostHeader
+
 # Actuator endpoints for monitoring
 management:
   endpoints:
